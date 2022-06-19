@@ -1,0 +1,29 @@
+@import "src/styles/variables.scss";
+
+.App {
+  text-align: center;
+  // margin: 14px;
+}
+
+
+// .navbar {
+//   background-color: $nav-background;
+//   display: flex;
+//   flex-direction: column;
+//   min-width: 18rem;
+//   padding: $spacing 0;
+
+// }
+
+.home {
+  background-image: 'background-1.png';
+}
+
+.page-loading {
+  height: 100vh;
+  width: 100vw;
+  background-color: silver;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
