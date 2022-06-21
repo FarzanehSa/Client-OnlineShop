@@ -1,46 +1,70 @@
 import React, { useState, useEffect } from 'react';
+import {BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import axios from 'axios';
 import './App.scss';
 
-import LinearProgress from '@mui/material/LinearProgress';
+import ProductsContext from '../contexts/ProductsContext';
 
-import ProductsContext from './ProductsContext';
-import Navigation from './Navigation';
+import Home from './Home';
+import About from './About';
+import Products from './Products';
+import ProductMain from './ProductMain';
+import DataEntry from './DataEntry';
+import Navbar from './Navbar';
 
 const App = () => {
 
 
   const [products, setProducts] = useState([]);
+  const [productSpec, setProductSpec] = useState({
+    categories: [],
+    styles: [],
+    sizes: [],
+    colors: []
+  });
+  const [product, setProduct] = useState({});
 
   useEffect( () => {
     
     axios.get('http://localhost:8080/api/products')
     .then((response) => {
       // handle success
-      setProducts(prev => response.data);
+      const sizes = response.data.sizes;
+      setProducts(prev => response.data.products);
+      setProductSpec({...productSpec , sizes});
     }) 
     
   },[])
   
+  console.log('👟👞🥾',products) // 
+  console.log('🔧🪛',productSpec) //
   
-  console.log('👟👞🥾',products) // The entire response 
+  
+  const addItemToProductsList = (newProduct) => {
+    setProduct(prev => newProduct)
+  }
+
+  console.log('👟',product);
 
 
 
   return (
     <div className="App">
-      {products.length !== 0 && 
-        <ProductsContext.Provider value={ products }>
+      <ProductsContext.Provider value={{ products, productSpec }}>
+        <Router>
 
-          <Navigation />
+          <Navbar />
 
-        </ProductsContext.Provider>
-      }
-      {products.length === 0 && 
-        <div className="page-loading">
-          <LinearProgress color="secondary" />
-        </div>
-      }
+          <Routes>
+            <Route path="/" element={<Home />}/>
+            <Route path="/about" element={<About />} />
+            <Route path="/products/*" element={<Products />} />
+            <Route path="/products/:id" element={<ProductMain />} />
+            <Route path="/add-data" element={<DataEntry onSubmit={addItemToProductsList} />} />
+          </Routes>
+
+        </Router>
+      </ProductsContext.Provider>
     </div>
   )
 }

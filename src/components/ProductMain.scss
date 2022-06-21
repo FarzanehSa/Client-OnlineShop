@@ -1,9 +1,11 @@
 @import "src/styles/variables.scss";
 
-.items {
-  border: $test1;
-  display:flex;
+.item {
+  border: $test;
+  height: 300px;
+  width: 300px;
 }
+
 
 .page-loading {
   height: 100vh;
@@ -13,4 +15,3 @@
   flex-direction: column;
   justify-content: center;
 }
-

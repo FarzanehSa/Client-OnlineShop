@@ -1,9 +1,10 @@
 import React, {useContext} from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
-import axios from 'axios';
+import { NavLink } from 'react-router-dom';
 import './Products.scss';
 
-import ProductsContext from './ProductsContext';
+import LinearProgress from '@mui/material/LinearProgress';
+
+import ProductsContext from '../contexts/ProductsContext';
 import Product from './Product';
 
 
@@ -14,10 +15,9 @@ const Products = () => {
 
   const productsLinkArray = products && products.map(product => {
     return (
-      // <li ><Link key={product.id} to={`${product.id}`}>Product #{product.id}</Link></li>
-      <Link key={product.id} to={`${product.id}`}>
-        <Product id={product.id}/>
-      </Link>
+      <NavLink key={product.id} to={`${product.id}`}>
+        <Product  {...product}/>
+      </NavLink>
     )
   }) 
 
@@ -26,17 +26,18 @@ const Products = () => {
     <div>
 
       <h2>Products</h2>
-
-      <Routes>
-        <Route path="" element={
-          <h2>Please Select your Item</h2>
-          } />
-        {/* <Route path=":id" element={<Product />} /> */}
-      </Routes>
       
-      <nav className='items'>
-        {productsLinkArray}
-      </nav>
+      { products && products.length !== 0 && 
+        <nav className='items'>
+          {productsLinkArray}
+        </nav>
+      }
+
+      { ( !products || products.length === 0 ) &&
+        <div className="page-loading">
+          <LinearProgress color="secondary" />
+        </div>
+      }
 
     </div>
   );
