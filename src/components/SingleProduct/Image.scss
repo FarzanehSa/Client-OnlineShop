@@ -1,0 +1,33 @@
+@import "src/styles/variables.scss";
+
+.image-box {
+  display: flex;
+  justify-content: center;
+  // border: $test;
+  height: 50vw;
+  width: 50vw;
+  background-color: WhiteSmoke;
+}
+
+.arrow-b {
+  border            : none;
+  color             : goldenrod;
+  background-color  : transparent;
+  height: 10%;
+  width: 5%;
+  align-self: center;
+  font-size: 2em;
+
+  &:hover {
+    color           : red;
+    cursor          : pointer;
+  }
+}
+
+.image {
+  // border: $test;
+  align-self: center;
+  height: 95%;
+  width: 90%;
+}
+

@@ -1,0 +1,30 @@
+@import "src/styles/variables.scss";
+
+.single-item {
+  border: $test;
+  padding: 1em;
+  height: 100vh;
+  width: 100vw;
+}
+
+.single-box {
+  display: flex;
+}
+
+.item-details {
+  width: 50vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-content: center;
+}
+
+
+.page-loading {
+  height: 100vh;
+  width: 100vw;
+  background-color: silver;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}

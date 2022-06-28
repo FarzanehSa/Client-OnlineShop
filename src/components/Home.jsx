@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {Link, Route, Routes } from 'react-router-dom';
+import {NavLink, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 
 import Products from './Products';
 
-import './Home.scss';
+import '../styles/Home.scss';
 
 const Home = () => {
 
@@ -21,15 +21,8 @@ const Home = () => {
   return (
     <div className='home' style={{ backgroundImage: `url(/images/background-${mode}.png)` }}>
       <h2 className='title'>All You Need</h2>
-      <button>Men's Selection</button>
-      <button><Link to="/products"> Women's Selection </Link>
-
-      </button>
-      <Routes>
-        <Route path="/products/*" element={<Products />} />
-
-      </Routes>
-
+      <button><NavLink to="/products/men"> Men's Selection </NavLink></button>
+      <button><NavLink to="/products/women"> Women's Selection </NavLink></button>
     </div>
   );
 };

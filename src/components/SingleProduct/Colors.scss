@@ -1,0 +1,43 @@
+@import "src/styles/variables.scss";
+
+.color-list {
+  display: flex;
+  justify-content: center;
+}
+
+.color-selected {
+  border: $test;
+  border-radius: 50%;
+}
+
+.btn {
+  align-self: center;
+  margin: 0.2em;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  border: 0.3em double white;
+
+  &:hover {
+    cursor          : pointer;
+  }
+}
+
+.black {
+  background-color: black;
+}
+.navy {
+  background-color: navy;
+}
+.white {
+  background-color: snow;
+}
+.red {
+  background-color: red;
+}
+.grey {
+  background-color: lightgray;
+}
+.brown {
+  background-color: DarkGoldenrod;
+}
