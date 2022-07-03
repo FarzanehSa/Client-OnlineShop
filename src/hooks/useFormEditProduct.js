@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-export default function useFormAddProduct(baseData, action) {
+export default function useFormEditProduct(baseData, action) {
   const [formData, setFormData] = useState(baseData);
   const [errorMsg, setErrorMsg] = useState("")
-  // const [checked, setChecked] = useState(false);
+  console.log('formdataaa\n', formData);
 
   const handleChange = (event) => {
     const { name, value } = event.target;

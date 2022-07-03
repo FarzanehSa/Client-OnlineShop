@@ -1,6 +1,8 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import {NavLink, Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
+
+import NavViewContext from '../contexts/NavViewContext';
 
 import Products from './Products';
 
@@ -8,7 +10,12 @@ import '../styles/Home.scss';
 
 const Home = () => {
 
+  const {frontEndView} = useContext(NavViewContext);
   const [mode, setMode] = useState(1);
+
+  useEffect(() => {
+    frontEndView();
+  },[])
 
   useEffect(() => {
     const rotateBackground = setTimeout(() => {

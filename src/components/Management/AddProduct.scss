@@ -1,0 +1,19 @@
+@import "src/styles/variables.scss";
+
+.add-item-page {
+  border: $test;
+  margin: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-item-form {
+  border: $test;
+  margin: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

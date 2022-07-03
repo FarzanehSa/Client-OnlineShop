@@ -1,4 +1,4 @@
-export function  getProducts(products, cat, style) {
+export function getProducts(products, cat, style) {
 
   if (!style) {
     const selection = products.filter(product => {

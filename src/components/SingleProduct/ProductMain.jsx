@@ -5,18 +5,28 @@ import './ProductMain.scss';
 
 import LinearProgress from '@mui/material/LinearProgress';
 
+import NavViewContext from '../../contexts/NavViewContext';
 import ProductsContext from '../../contexts/ProductsContext';
 import Image from './Image';
 import Colors from './Colors';
 
 const ProductMain = () => {
   
-  const {products} = useContext(ProductsContext);
-  const [colorSelection, setColorSelection] = useState([])
-  const [product, setProduct] = useState({})
+  const [colorSelection, setColorSelection] = useState([]);
+  const [product, setProduct] = useState({});
   const [id, setId] = useState(Number(useParams().id));
-  const [images, setImages] = useState([])
+  const [images, setImages] = useState([]);
+  
+  const {products} = useContext(ProductsContext);
+  const {frontEndView} = useContext(NavViewContext);
 
+  useEffect(() => {
+    frontEndView();
+  }, []);
+  
+  useEffect(() => {
+    
+  }, [id]);
   
   const findProduct = (id, products) => {
     return products.filter(product => product.id === id)[0]
@@ -27,12 +37,9 @@ const ProductMain = () => {
   }
 
   const changeColorHandler = (pro) => {
-    setId(pro.id);
-    setProduct(prev => pro)
+    setId(prev => pro.id);
+    setProduct(prev => pro);
   }
-
-
-  // let product = {}
   
   useEffect(() => {
     if (products) {
@@ -44,8 +51,9 @@ const ProductMain = () => {
       });
       setColorSelection(difColors);
       setImages([product.image1, product.image2, product.image3]);
+      window.history.replaceState('', '',`/products/${product.category}/${id}`);
     }
-  },[products, product])
+  },[products, product, id])
 
   const rotateLeft = () => {
     const x = images.shift();

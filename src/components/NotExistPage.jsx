@@ -2,7 +2,7 @@ import React, {useEffect, useContext} from 'react';
 
 import NavViewContext from '../contexts/NavViewContext';
 
-const About = () => {
+const NotExistPage = () => {
 
   const {frontEndView} = useContext(NavViewContext);
 
@@ -14,9 +14,9 @@ const About = () => {
 
   return (
     <div>
-      <h2>About</h2>
+      <h2>Not Exist Page</h2>
     </div>
   );
 };
 
-export default About;
+export default NotExistPage;
