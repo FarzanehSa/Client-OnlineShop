@@ -99,22 +99,6 @@ const App = () => {
     })
   }
 
-  // useEffect(() => {
-  //   if (newProduct && Object.keys(newProduct).length !== 0) {
-  //     axios.post('http://localhost:8080/api/products', {product: newProduct})
-  //     .then((response) => {
-  //       console.log('✉️', response);
-  //       if (response.data.errCode && response.data.errCode === 1001) {
-  //         setModalMode(1001);
-  //         openModal();
-  //       } else {
-  //         setModalMode(1002);
-  //         openModal();
-  //       }
-  //     })
-  //   }
-  // },[newProduct])
-
   console.log("modal: ", modalMode)
   // console.log('🥾',newProduct) // 
 

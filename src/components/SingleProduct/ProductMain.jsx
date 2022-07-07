@@ -1,6 +1,7 @@
 import React, {useEffect, useState, useContext} from 'react';
 import { NavLink, Route, Routes } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import './ProductMain.scss';
 
 import LinearProgress from '@mui/material/LinearProgress';
@@ -22,15 +23,29 @@ const ProductMain = () => {
 
   useEffect(() => {
     frontEndView();
-  }, []);
+    if (products) {
+      getProductById(id)
+    }
+  },[]);
   
   useEffect(() => {
-    
-  }, [id]);
+    if (product) {
+      const difColors =findColors(product.name, products).map(row => {
+        return (row.id === product.id) ? {...row, selected: true} : {...row, selected: false}
+      });
+      setColorSelection(difColors);
+      setImages([product.image1, product.image2, product.image3]);
+      window.history.replaceState('', '',`/products/${product.category}/${id}`);
+    }
+  },[products, product, id])
   
-  const findProduct = (id, products) => {
-    return products.filter(product => product.id === id)[0]
-  }
+  const getProductById = (id) => {
+    axios.get(`http://localhost:8080/api/products/${id}`)
+    .then((response) => {
+      // handle success
+      setProduct(prev => response.data.product);
+    }) 
+  } 
 
   const findColors = (itemName, products) => {
     return  products.filter(product => product.name === itemName)
@@ -41,19 +56,6 @@ const ProductMain = () => {
     setProduct(prev => pro);
   }
   
-  useEffect(() => {
-    if (products) {
-      setProduct(prev => findProduct(id, products));
-    }
-    if (product) {
-      const difColors =findColors(product.name, products).map(row => {
-        return (row.id === product.id) ? {...row, selected: true} : {...row, selected: false}
-      });
-      setColorSelection(difColors);
-      setImages([product.image1, product.image2, product.image3]);
-      window.history.replaceState('', '',`/products/${product.category}/${id}`);
-    }
-  },[products, product, id])
 
   const rotateLeft = () => {
     const x = images.shift();
@@ -65,7 +67,7 @@ const ProductMain = () => {
     setImages(prev => [x, ...prev] );
   }
 
-  // console.log('👟',product);
+  console.log('👟',product);
   // console.log('⚫️⚪️',colorSelection);
   // console.log('🗾',images);
 
