@@ -1,13 +1,16 @@
 import { useState } from "react";
 
-export default function useFormEditProduct(baseData, action) {
+export default function useFormEditProduct(baseData, action, reset) {
   const [formData, setFormData] = useState(baseData);
-  const [errorMsg, setErrorMsg] = useState("")
-  console.log('formdataaa\n', formData);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value })
+    const { name, value, type} = event.target;
+    if (type === 'file') {
+      setFormData({ ...formData, [name]: `/${event.target.files[0].name}` })
+    } else {
+      setFormData({ ...formData, [name]: value })
+    }
   };
 
   const handleCheckBoxChange = (event) => {
@@ -23,7 +26,7 @@ export default function useFormEditProduct(baseData, action) {
     } else {
       setErrorMsg("");
       action(formData);
-      setFormData(baseData);
+      reset();
     };
   }
 

@@ -16,7 +16,7 @@
   height: 30px;
   width: 30px;
   border-radius: 50%;
-  border: 0.3em double white;
+  border: 0.3em double black;
 
   &:hover {
     cursor          : pointer;
@@ -40,4 +40,10 @@
 }
 .brown {
   background-color: DarkGoldenrod;
+}
+.beige {
+  background-color: beige;
+}
+.blue {
+  background-color: lightblue;
 }

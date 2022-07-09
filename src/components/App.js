@@ -20,12 +20,14 @@ import Navbar from './Navbar';
 
 import ErrorDuplicateSku from './Modals/ErrorDuplicateSku'
 import AddProductSuccessfully from './Modals/AddProductSuccessfully'
+import EditProductSuccessfully from './Modals/EditProductSuccessfully'
+import EditProductUnSuccessfully from './Modals/EditProductUnSuccessfully'
+
 
 const App = () => {
 
   const [navView, setNavView] = useState("")
   const [products, setProducts] = useState([]);
-  const [availableSizes, setAvailableSizes] = useState([]);
   const [productSpec, setProductSpec] = useState({
     categories: [],
     styles: [],
@@ -34,7 +36,7 @@ const App = () => {
   });
   // const [newProduct, setNewProduct] = useState({});
   const [modalIsOpen, setModalIsOpen] = useState(false)
-  const [modalMode, setModalMode] = useState();
+  const [modalMode, setModalMode] = useState({});
 
   useEffect( () => {
     
@@ -46,7 +48,6 @@ const App = () => {
       const colors = response.data.colors;
       const sizes = response.data.sizes;
       setProducts(prev => response.data.products);
-      setAvailableSizes(prev => response.data.availableSizes);
       setProductSpec({...productSpec ,categories,styles, colors, sizes});
     }) 
     
@@ -54,12 +55,12 @@ const App = () => {
   
   console.log('👟👞🥾',products) // 
   console.log('🔧🪛',productSpec) //
-  console.log('▫️◾️◻️🔲',availableSizes) //
 
   function openModal() {
     setModalIsOpen(true);
   }
   function closeModal() {
+    setModalMode({});
     setModalIsOpen(false);
   }
 
@@ -75,12 +76,13 @@ const App = () => {
     if (newProduct && Object.keys(newProduct).length !== 0) {
       axios.post('http://localhost:8080/api/products', {product: newProduct})
       .then((response) => {
-        console.log('✉️', response.data);
         if (response.data.errCode && response.data.errCode === 1001) {
-          setModalMode(1001);
+          setModalMode({mode: 1001, sku: response.data.sku});
           openModal();
         } else {
-          setModalMode(1002);
+          const newAddedProduct = response.data;
+          setProducts([...products, newAddedProduct ])
+          setModalMode({mode: 1002, sku: newAddedProduct.sku});
           openModal();
         }
       })
@@ -88,18 +90,24 @@ const App = () => {
   }
 
   const editProduct = (updateProduct) => {
+    console.log('f...',updateProduct);
     axios.put(`http://localhost:8080/api/products/${updateProduct.id}`, {product: updateProduct})
     .then(response => {
       const updatedProduct = response.data;
-      console.log('👨🏼‍🎓',updatedProduct);
       setProducts(products.map(product => {
         if (product.id === updatedProduct.id) return updatedProduct;
         return product;
       }))
+      setModalMode({mode: 1003, sku: updatedProduct.sku});
+      openModal();
+    })
+    .catch((error) => {
+      setModalMode({mode: 1004});
+      openModal();
     })
   }
 
-  console.log("modal: ", modalMode)
+  // console.log("modal: ", modalMode)
   // console.log('🥾',newProduct) // 
 
   return (
@@ -115,9 +123,12 @@ const App = () => {
               // ariaHideApp={false}
               appElement={document.getElementById('root')}
             >
-              {modalMode === 1001 && <ErrorDuplicateSku closeModal={closeModal}/>}
-              {modalMode === 1002 && <AddProductSuccessfully closeModal={closeModal}/>}
-            </Modal>}
+              {modalMode.mode === 1001 && <ErrorDuplicateSku closeModal={closeModal} sku={modalMode.sku} />}
+              {modalMode.mode === 1002 && <AddProductSuccessfully closeModal={closeModal} sku={modalMode.sku} />}
+              {modalMode.mode === 1003 && <EditProductSuccessfully closeModal={closeModal} sku={modalMode.sku} />}
+              {modalMode.mode === 1004 && <EditProductUnSuccessfully closeModal={closeModal}/>}
+            </Modal>
+          }
 
           <Routes>
             <Route path="/" element={<Home />}/>

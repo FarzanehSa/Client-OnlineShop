@@ -8,12 +8,13 @@ const Product = (props) => {
 
   return (
     <div className='item'>
-      <h2> #{props.id} </h2>
-      <img src={`${props.image1}`} alt="pro" width="200" height="200"/>
+      <p>
+        <img src={`${props.image1}`} alt="pro" width="200" height="200"/>
+      </p>
+      <span>{props.name}</span>
       <br />
-      <span>name : {props.name}</span>
       <br />
-      <span>price : {props.price}</span>
+      <span>${props.price / 100}</span>
     </div>
   );
 };

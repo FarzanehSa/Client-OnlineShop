@@ -3,15 +3,15 @@ import { NavLink, Route, Routes } from 'react-router-dom';
 
 import './modal.scss';
 
-const AddProductSuccessfully = ({closeModal, sku}) => {
+const EditProductUnSuccessfully = ({closeModal}) => {
 
   return (
-    <div className='add-product-successfully'>
-      <h2> Product SKU: {sku} </h2>
-      <h2> Added  Successfully. </h2>
+    <div className='edit-product-unsuccessfully'>
+      <h2>Ooops! Something Happend.</h2>
+      <h2>Couldn't Save your edit.</h2>
       <button onClick={closeModal}>close</button>
     </div>
   );
 };
 
-export default AddProductSuccessfully;
+export default EditProductUnSuccessfully;

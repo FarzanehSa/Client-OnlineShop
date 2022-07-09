@@ -18,7 +18,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 
 
-const LoadProductForEdit = ({product, onSubmit}) => {
+const LoadProductForEdit = ({product, onSubmit, onReset}) => {
 
   const {productSpec} = useContext(ProductsContext);
 
@@ -40,10 +40,9 @@ const LoadProductForEdit = ({product, onSubmit}) => {
     )
   });
 
-  const baseFormData = { ...product};
+  const baseFormData = { ...product, price: product.price / 100};
   
-  const { formData, handleChange, handleSubmit, errorMsg, handleCheckBoxChange} = useFormEditProduct(baseFormData, onSubmit);
-  console.log(formData);
+  const { formData, handleChange, handleSubmit, errorMsg, handleCheckBoxChange} = useFormEditProduct(baseFormData, onSubmit, onReset);
 
   return (
       <form onSubmit={handleSubmit} >
@@ -139,41 +138,41 @@ const LoadProductForEdit = ({product, onSubmit}) => {
             />
           </FormControl>
 
-          <FormControl>
-            <TextField 
-              sx={{ m: 1, width: '80ch' }}
-              label="Image 1 - URL"
+          <div className='image-select'>
+            <label htmlFor="image1" > Change Image 1:&nbsp;&nbsp;&nbsp;</label>
+            <input
               id="image1"
               name="image1"
-              type={'url'}
-              value={formData.image1}
+              type={"file"}
+              accept={'image/*'} 
+              value={undefined}
               onChange={handleChange}
             />
-          </FormControl>
+          </div>
 
-          <FormControl>
-            <TextField 
-              sx={{ m: 1, width: '80ch' }}
-              label="Image 2 - URL"
+          <div className='image-select'>
+            <label htmlFor="image2" > Change Image 2:&nbsp;&nbsp;&nbsp;</label>
+            <input
               id="image2"
               name="image2"
-              type={'url'}
-              value={formData.image2}
+              type={"file"}
+              accept={'image/*'}
+              value={undefined}
               onChange={handleChange}
             />
-          </FormControl>
+          </div>
 
-          <FormControl>
-            <TextField 
-              sx={{ m: 1, width: '80ch' }}
-              label="Image 3 - URL"
+          <div className='image-select'>
+            <label htmlFor="image3" > Change Image 3:&nbsp;&nbsp;&nbsp;</label>
+            <input
               id="image3"
               name="image3"
-              type={'url'}
-              value={formData.image3}
+              type={"file"}
+              accept={'image/*'}
+              value={undefined}
               onChange={handleChange}
             />
-          </FormControl>
+          </div>
 
           <div>
             <FormControl required sx={{ m: 1, minWidth: 120 }}>
@@ -184,7 +183,7 @@ const LoadProductForEdit = ({product, onSubmit}) => {
                 id="input-price"
                 name="price"
                 type='number'
-                value={formData.price / 100}
+                value={formData.price}
                 onChange={handleChange}
                 startAdornment={<InputAdornment position="start">$</InputAdornment>}
                 label="Price"
@@ -203,7 +202,7 @@ const LoadProductForEdit = ({product, onSubmit}) => {
               />} label="Display In Group Page" />
             
           </div>
-          <button type="submit">Register</button>
+          <button type="submit" className='button-edit-page'>Save</button>
 
         </div>
       </form>

@@ -34,7 +34,13 @@ const ProductMain = () => {
         return (row.id === product.id) ? {...row, selected: true} : {...row, selected: false}
       });
       setColorSelection(difColors);
-      setImages([product.image1, product.image2, product.image3]);
+
+      const imagesArray = [];
+      if (product.image1) imagesArray.push(product.image1);
+      if (product.image2) imagesArray.push(product.image2);
+      if (product.image3) imagesArray.push(product.image3);
+      setImages(imagesArray);
+      
       window.history.replaceState('', '',`/products/${product.category}/${id}`);
     }
   },[products, product, id])
@@ -67,7 +73,7 @@ const ProductMain = () => {
     setImages(prev => [x, ...prev] );
   }
 
-  console.log('👟',product);
+  // console.log('👟',product);
   // console.log('⚫️⚪️',colorSelection);
   // console.log('🗾',images);
 
@@ -79,7 +85,7 @@ const ProductMain = () => {
             <div className='single-box'>
               <Image images={images} onLeft={rotateLeft} onRight={rotateRight}/>
               <div className='item-details'>
-                <h2>This is product #{product.id} </h2>
+                <h2>SKU #{product.sku} </h2>
                 <span>{product.name}</span>
                 <br />
                 <span>${(product.price / 100).toFixed(2)}</span>

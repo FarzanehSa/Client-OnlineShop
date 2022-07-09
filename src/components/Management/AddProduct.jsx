@@ -61,7 +61,7 @@ const AddProduct = (props) => {
     
   const { formData, handleChange, handleSubmit, errorMsg, handleCheckBoxChange} = useFormAddProduct(baseFormData, props.onSubmit);
   
-  console.log(formData);
+  // console.log(formData);
   
   return (
     <div className='add-item-page'>
@@ -169,41 +169,43 @@ const AddProduct = (props) => {
             />
           </FormControl>
 
-          <FormControl>
-            <TextField 
-              sx={{ m: 1, width: '80ch' }}
-              label="Image 1 - URL"
+          <div className='image-select'>
+            <label htmlFor="image1" > Select Image 1:&nbsp;&nbsp;&nbsp;</label>
+            <input
+              required 
               id="image1"
               name="image1"
-              type={'url'}
-              value={formData.image1}
+              type={"file"}
+              accept={'image/*'} 
+              value={undefined}
               onChange={handleChange}
             />
-          </FormControl>
+            <FormHelperText>Required</FormHelperText>
+          </div>
 
-          <FormControl>
-            <TextField 
-              sx={{ m: 1, width: '80ch' }}
-              label="Image 2 - URL"
+          <div className='image-select'>
+            <label htmlFor="image2" > Select Image 2:&nbsp;&nbsp;&nbsp;</label>
+            <input
               id="image2"
               name="image2"
-              type={'url'}
-              value={formData.image2}
+              type={"file"}
+              accept={'image/*'}
+              value={undefined}
               onChange={handleChange}
             />
-          </FormControl>
+          </div>
 
-          <FormControl>
-            <TextField 
-              sx={{ m: 1, width: '80ch' }}
-              label="Image 3 - URL"
+          <div className='image-select'>
+            <label htmlFor="image3" > Select Image 3:&nbsp;&nbsp;&nbsp;</label>
+            <input
               id="image3"
               name="image3"
-              type={'url'}
-              value={formData.image3}
+              type={"file"}
+              accept={'image/*'}
+              value={undefined}
               onChange={handleChange}
             />
-          </FormControl>
+          </div>
 
           <div>
             <FormControl required sx={{ m: 1, minWidth: 120 }}>
