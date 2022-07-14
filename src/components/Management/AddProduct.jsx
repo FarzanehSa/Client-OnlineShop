@@ -1,5 +1,6 @@
 import React, {useEffect, useState, useContext} from 'react';
 import useFormAddProduct from "../../hooks/useFormAddProduct";
+import useFormAddBarcode from "../../hooks/useFormAddBarcode";
 
 import './AddProduct.scss';
 import ProductsContext from '../../contexts/ProductsContext';
@@ -58,10 +59,13 @@ const AddProduct = (props) => {
   // color_id, size_id, name, description, image_url, price
   const baseFormData = { sku: "", category_id: "", style_id: "",
     color_id: "", name: "", description: "", image1: "", image2: "", image3: "", price: "", disp:false};
+  const baseFormBarcode = { barcode: "", sku: "", size_id: "", quantity:0 }
     
   const { formData, handleChange, handleSubmit, errorMsg, handleCheckBoxChange} = useFormAddProduct(baseFormData, props.onSubmit);
+  const { formBarcodeData, handleChange2, handleSubmit2, errorMsg2} = useFormAddBarcode(baseFormBarcode, props.onSubmitBarcode);
   
-  // console.log(formData);
+  console.log(formData);
+  console.log(formBarcodeData);
   
   return (
     <div className='add-item-page'>
@@ -127,20 +131,6 @@ const AddProduct = (props) => {
               <FormHelperText>Required</FormHelperText>
             </FormControl>
 
-            {/* <FormControl required sx={{ m: 1, minWidth: 120 }}>
-              <InputLabel id="select-size-label">size</InputLabel>
-              <Select
-                labelId="select-size-label"
-                id="select-size"
-                name="size_id"
-                value={formData.size_id}
-                // label="* size *"
-                onChange={handleChange}
-              >
-                {sizes}
-              </Select>
-              <FormHelperText>Required</FormHelperText>
-            </FormControl> */}
           </div>
 
           <FormControl>
@@ -235,8 +225,69 @@ const AddProduct = (props) => {
               />} label="Display In Group Page" />
             </div>
 
-          <button type="submit"> Add </button>
+          <button type="submit"> Add Item</button>
 
+        </div>
+      </form>
+
+      <br />
+
+      <h2>Add Barcode</h2>
+      <form onSubmit={handleSubmit2} >
+        <div className='add-barcode-form'>
+          <FormControl>
+            <TextField 
+              required 
+              sx={{ m: 1, width: '25ch' }}
+              label="barcode"
+              id="barcode"
+              name="barcode"
+              value={formBarcodeData.barcode}
+              onChange={handleChange2}
+            />
+            <FormHelperText>Required</FormHelperText>
+          </FormControl>
+          <FormControl>
+            <TextField 
+              required 
+              sx={{ m: 1, width: '25ch' }}
+              label="SKU"
+              id="sku"
+              name="sku"
+              value={formBarcodeData.sku}
+              onChange={handleChange2}
+            />
+            <FormHelperText>Required</FormHelperText>
+          </FormControl>
+          <FormControl required sx={{ m: 1, minWidth: 120 }}>
+            <InputLabel id="select-size-label">size</InputLabel>
+            <Select
+              labelId="select-size-label"
+              id="select-size"
+              name="size_id"
+              value={formBarcodeData.size_id}
+              // label="* size *"
+              onChange={handleChange2}
+            >
+              {sizes}
+            </Select>
+            <FormHelperText>Required</FormHelperText>
+          </FormControl>
+          <FormControl>
+            <TextField 
+              sx={{ m: 1, width: '25ch' }}
+              label="quantity"
+              id="quantity"
+              type="number"
+              min="0"
+              name="quantity"
+              value={formBarcodeData.quantity}
+              onChange={handleChange2}
+            />
+            {errorMsg2 &&
+              <FormHelperText style={{color: 'red'}}>{errorMsg2}</FormHelperText>}
+          </FormControl>
+          <button type="submit"> Add Barcode </button>
         </div>
       </form>
     </div>

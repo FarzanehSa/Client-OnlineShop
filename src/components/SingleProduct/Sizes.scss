@@ -1,0 +1,23 @@
+@import "src/styles/variables.scss";
+
+.size-list {
+  display: grid;
+  // border: $test;
+  grid-template-columns: 60px 60px 60px 60px;
+  grid-auto-rows: 60px;
+  align-items: center;
+  justify-content: center;
+}
+
+.size-box {
+  border: 1px outset black;
+  background-color: snow;
+  height:50px;
+  width:50px;
+  cursor:pointer;
+}
+
+.size-box:hover {
+  background-color: lightpink;
+  color:white;
+}

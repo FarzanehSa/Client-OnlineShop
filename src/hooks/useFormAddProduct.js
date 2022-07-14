@@ -7,7 +7,12 @@ export default function useFormAddProduct(baseData, action) {
   const handleChange = (event) => {
     const { name, value, type} = event.target;
     if (type === 'file') {
-      setFormData({ ...formData, [name]: `/${event.target.files[0].name}` })
+      if (event.target.files.length) {
+        setFormData({ ...formData, [name]: `/${event.target.files[0].name}` })
+      } else {
+        setFormData({ ...formData, [name]: "" })
+      }
+
     } else {
       setFormData({ ...formData, [name]: value })
     }

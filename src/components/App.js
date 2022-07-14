@@ -18,10 +18,8 @@ import EditProduct from '../components/Management/EditProduct';
 import Setting from '../components/Management/Setting';
 import Navbar from './Navbar';
 
-import ErrorDuplicateSku from './Modals/ErrorDuplicateSku'
-import AddProductSuccessfully from './Modals/AddProductSuccessfully'
-import EditProductSuccessfully from './Modals/EditProductSuccessfully'
-import EditProductUnSuccessfully from './Modals/EditProductUnSuccessfully'
+import ShowErrorModal from './Modals/ShowErrorModal'
+import ShowSuccessAddEditProduct from './Modals/ShowSuccessAddEditProduct'
 
 
 const App = () => {
@@ -76,21 +74,49 @@ const App = () => {
     if (newProduct && Object.keys(newProduct).length !== 0) {
       axios.post('http://localhost:8080/api/products', {product: newProduct})
       .then((response) => {
-        if (response.data.errCode && response.data.errCode === 1001) {
-          setModalMode({mode: 1001, sku: response.data.sku});
+        if (response.data.errCode) {
+          const {errCode, errMsg, sku} = response.data;
+          setModalMode({mode: 101, errCode, errMsg, sku});
           openModal();
         } else {
           const newAddedProduct = response.data;
           setProducts([...products, newAddedProduct ])
-          setModalMode({mode: 1002, sku: newAddedProduct.sku});
+          const msg = "Add Successfully"
+          setModalMode({mode: 102, msg, sku: newAddedProduct.sku});
           openModal();
         }
+      })
+      .catch((error) => {
+        setModalMode({mode: 101, errMsg: error.message});
+        openModal();
+      })
+    }
+  }
+
+  const addBarcode = (newBarcode) => {
+    if (newBarcode && Object.keys(newBarcode).length !== 0) {
+      axios.post('http://localhost:8080/api/products/barcode', {row: newBarcode})
+      .then((response) => {
+        if (response.data.errCode) {
+          const {errCode, errMsg} = response.data;
+          setModalMode({mode: 101, errCode, errMsg});
+          openModal();
+        } else {
+          const newAvailableSize = response.data;
+          const msg = "Add New Size Successfully"
+          setModalMode({mode: 102, msg, sku: newAvailableSize.sku});
+          openModal();
+        }
+        console.log(response.data);
+      })
+      .catch((error) => {
+        setModalMode({mode: 101, errMsg: error.message});
+        openModal();
       })
     }
   }
 
   const editProduct = (updateProduct) => {
-    console.log('f...',updateProduct);
     axios.put(`http://localhost:8080/api/products/${updateProduct.id}`, {product: updateProduct})
     .then(response => {
       const updatedProduct = response.data;
@@ -98,11 +124,12 @@ const App = () => {
         if (product.id === updatedProduct.id) return updatedProduct;
         return product;
       }))
-      setModalMode({mode: 1003, sku: updatedProduct.sku});
+      const msg = "Edit Successfully"
+      setModalMode({mode: 102, msg, sku: updatedProduct.sku});
       openModal();
     })
     .catch((error) => {
-      setModalMode({mode: 1004});
+      setModalMode({mode: 101, errMsg: error.message});
       openModal();
     })
   }
@@ -123,10 +150,8 @@ const App = () => {
               // ariaHideApp={false}
               appElement={document.getElementById('root')}
             >
-              {modalMode.mode === 1001 && <ErrorDuplicateSku closeModal={closeModal} sku={modalMode.sku} />}
-              {modalMode.mode === 1002 && <AddProductSuccessfully closeModal={closeModal} sku={modalMode.sku} />}
-              {modalMode.mode === 1003 && <EditProductSuccessfully closeModal={closeModal} sku={modalMode.sku} />}
-              {modalMode.mode === 1004 && <EditProductUnSuccessfully closeModal={closeModal}/>}
+              {modalMode.mode === 101 && <ShowErrorModal closeModal={closeModal} modalMode={modalMode} />}
+              {modalMode.mode === 102 && <ShowSuccessAddEditProduct closeModal={closeModal} modalMode={modalMode} />}
             </Modal>
           }
 
@@ -140,7 +165,7 @@ const App = () => {
 
             <Route path="/products/*" element={<NotExistPage />} />
             <Route path="/*" element={<NotExistPage />} />
-            <Route path="/setting/add-product" element={<AddProduct onSubmit={addProduct} />} />
+            <Route path="/setting/add-product" element={<AddProduct onSubmit={addProduct} onSubmitBarcode={addBarcode} />} />
             <Route path="/setting/edit-product" element={<EditProduct onSubmit={editProduct} />} />
           </Routes>
 

@@ -10,15 +10,17 @@ import NavViewContext from '../../contexts/NavViewContext';
 import ProductsContext from '../../contexts/ProductsContext';
 import Image from './Image';
 import Colors from './Colors';
+import Sizes from './Sizes';
 
 const ProductMain = () => {
   
   const [colorSelection, setColorSelection] = useState([]);
   const [product, setProduct] = useState({});
+  const [availableSizes, setAvailableSizes] = useState([]);
   const [id, setId] = useState(Number(useParams().id));
   const [images, setImages] = useState([]);
   
-  const {products} = useContext(ProductsContext);
+  const {products, productSpec} = useContext(ProductsContext);
   const {frontEndView} = useContext(NavViewContext);
 
   useEffect(() => {
@@ -49,7 +51,9 @@ const ProductMain = () => {
     axios.get(`http://localhost:8080/api/products/${id}`)
     .then((response) => {
       // handle success
+      console.log(response.data);
       setProduct(prev => response.data.product);
+      setAvailableSizes(prev => response.data.availableSizes);
     }) 
   } 
 
@@ -59,7 +63,8 @@ const ProductMain = () => {
 
   const changeColorHandler = (pro) => {
     setId(prev => pro.id);
-    setProduct(prev => pro);
+    getProductById(pro.id)
+    // setProduct(prev => pro);
   }
   
 
@@ -73,9 +78,10 @@ const ProductMain = () => {
     setImages(prev => [x, ...prev] );
   }
 
-  // console.log('👟',product);
+  console.log('👟',product);
   // console.log('⚫️⚪️',colorSelection);
   // console.log('🗾',images);
+  console.log('◻️◾️',availableSizes);
 
   return (
     <div className='single-item'>
@@ -90,7 +96,7 @@ const ProductMain = () => {
                 <br />
                 <span>${(product.price / 100).toFixed(2)}</span>
                 <br />
-                <span>size : {product.size}</span>
+                <Sizes sizes={productSpec.sizes} availableSizes={availableSizes}/>
                 <br />
                 <span>color : {product.color}</span>
                 <Colors colorSelection={colorSelection} onColor={changeColorHandler}/>

@@ -8,7 +8,7 @@
   width: 100%;
 }
 
-.ErrorDuplicateSku {
+.error-modal {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -18,7 +18,15 @@
   width: 100%;
 }
 
-.edit-product-successfully {
+.edit-suggestion {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1em;
+}
+
+.add-edit-product-successfully {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -28,12 +36,18 @@
   width: 100%;
 }
 
-.edit-product-unsuccessfully {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background-color: red;
-  height: 100%;
-  width: 100%;
+.button-modal {
+  background-color: BlanchedAlmond;
+  border-radius: 100px;
+  padding: 7px 20px;
+  text-align: center;
+  text-decoration: none;
+  border: 0;
+  font-size: 16px;
+  width: 80px;
+  cursor: pointer;
+}
+
+.button-modal:hover {
+  background-color: SandyBrown; 
 }
