@@ -3,6 +3,9 @@ import {BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import axios from 'axios';
 import Modal from 'react-modal';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import '../styles/App.scss';
 
 import ProductsContext from '../contexts/ProductsContext';
@@ -25,6 +28,7 @@ import ShowSuccessAddEditProduct from './Modals/ShowSuccessAddEditProduct'
 
 const App = () => {
 
+
   const [navView, setNavView] = useState("")
   const [products, setProducts] = useState([]);
   const [productSpec, setProductSpec] = useState({
@@ -37,6 +41,8 @@ const App = () => {
   const [cart, setCart] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalMode, setModalMode] = useState({});
+
+  
 
   useEffect( () => {
     const cart = JSON.parse(localStorage.getItem('cart'));
@@ -86,8 +92,9 @@ const App = () => {
       .then((response) => {
         if (response.data.errCode) {
           const {errCode, errMsg, sku} = response.data;
-          setModalMode({mode: 101, errCode, errMsg, sku});
-          openModal();
+          // setModalMode({mode: 101, errCode, errMsg, sku});
+          // openModal();
+          toast("there is a problem", {type: 'error'})
         } else {
           const newAddedProduct = response.data;
           setProducts([...products, newAddedProduct ])
@@ -206,6 +213,7 @@ const App = () => {
               {modalMode.mode === 103 && <CheckOutModal closeModal={closeModal} modalMode={modalMode} cart={cart} onRemove={onRemoveFromCart} onCheckout={onCheckout} /> }
             </Modal>
           }
+          <ToastContainer />
 
           <Routes>
             <Route path="/" element={<Home />}/>
