@@ -12,13 +12,14 @@ import Image from './Image';
 import Colors from './Colors';
 import Sizes from './Sizes';
 
-const ProductMain = () => {
+const ProductMain = ({addToCart}) => {
   
   const [colorSelection, setColorSelection] = useState([]);
   const [product, setProduct] = useState({});
   const [availableSizes, setAvailableSizes] = useState([]);
   const [id, setId] = useState(Number(useParams().id));
   const [images, setImages] = useState([]);
+  const [selectedSize, setSelectedSize] = useState({});
   
   const {products, productSpec} = useContext(ProductsContext);
   const {frontEndView} = useContext(NavViewContext);
@@ -36,6 +37,7 @@ const ProductMain = () => {
         return (row.id === product.id) ? {...row, selected: true} : {...row, selected: false}
       });
       setColorSelection(difColors);
+      setSelectedSize({})
 
       const imagesArray = [];
       if (product.image1) imagesArray.push(product.image1);
@@ -53,7 +55,7 @@ const ProductMain = () => {
       // handle success
       console.log(response.data);
       setProduct(prev => response.data.product);
-      setAvailableSizes(prev => response.data.availableSizes);
+      setAvailableSizes(prev => (response.data.availableSizes));
     }) 
   } 
 
@@ -67,7 +69,6 @@ const ProductMain = () => {
     // setProduct(prev => pro);
   }
   
-
   const rotateLeft = () => {
     const x = images.shift();
     setImages(prev => [...prev, x] );
@@ -78,10 +79,20 @@ const ProductMain = () => {
     setImages(prev => [x, ...prev] );
   }
 
-  console.log('👟',product);
+  const onSelectSize = (data) => {
+    setSelectedSize(prev => (data))
+  }
+
+  const onAdd = () => {
+    if (selectedSize.id)
+      addToCart([{barcode: selectedSize.barcode, id: selectedSize.id, qty: 1, name: product.name, color: product.color, price: product.price, img: product.image1, size: selectedSize.size}])
+  }
+
+  // console.log('👟',product);
   // console.log('⚫️⚪️',colorSelection);
   // console.log('🗾',images);
-  console.log('◻️◾️',availableSizes);
+  // console.log('◻️◾️',availableSizes);
+  // console.log('💢',selectedSize);
 
   return (
     <div className='single-item'>
@@ -96,7 +107,7 @@ const ProductMain = () => {
                 <br />
                 <span>${(product.price / 100).toFixed(2)}</span>
                 <br />
-                <Sizes sizes={productSpec.sizes} availableSizes={availableSizes}/>
+                <Sizes sizes={productSpec.sizes} availableSizes={availableSizes} onClick={onSelectSize} select={selectedSize} onAdd={onAdd}/>
                 <br />
                 <span>color : {product.color}</span>
                 <Colors colorSelection={colorSelection} onColor={changeColorHandler}/>

@@ -18,6 +18,7 @@ import EditProduct from '../components/Management/EditProduct';
 import Setting from '../components/Management/Setting';
 import Navbar from './Navbar';
 
+import CheckOutModal from './Modals/CheckOutModal'
 import ShowErrorModal from './Modals/ShowErrorModal'
 import ShowSuccessAddEditProduct from './Modals/ShowSuccessAddEditProduct'
 
@@ -33,10 +34,15 @@ const App = () => {
     colors: []
   });
   // const [newProduct, setNewProduct] = useState({});
-  const [modalIsOpen, setModalIsOpen] = useState(false)
+  const [cart, setCart] = useState([]);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalMode, setModalMode] = useState({});
 
   useEffect( () => {
+    const cart = JSON.parse(localStorage.getItem('cart'));
+    if (cart) {
+     setCart(cart);
+    }
     
     axios.get('http://localhost:8080/api/products')
     .then((response) => {
@@ -50,6 +56,10 @@ const App = () => {
     }) 
     
   },[])
+
+  useEffect(() => {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }, [cart]);
   
   console.log('👟👞🥾',products) // 
   console.log('🔧🪛',productSpec) //
@@ -134,8 +144,49 @@ const App = () => {
     })
   }
 
+  const addToCart = (x) => {
+    const barcode = x[0].barcode;
+    let flag = false
+    const updateCart = cart.map(item => {
+      if (barcode === item.barcode) {
+        item.qty += 1;
+        flag = true;
+      }
+      return item;
+    })
+    if (flag) {
+      setCart(updateCart)
+    } else {
+      setCart([...cart, ...x])
+    }
+  }
+
+  const onCartClick = () => {
+    console.log('👀');
+    setModalMode({mode: 103});
+    openModal();
+  }
+  
+  const onRemoveFromCart = (barcode) => {
+    console.log(barcode);
+    let updateCart = []
+    updateCart = cart.filter(item => barcode !== item.barcode) 
+    console.log(updateCart);
+    setCart(updateCart)
+  }
+
+  const onCheckout = (subtotal) => {
+    axios.post('http://localhost:8080/api/orders', {cart: cart, subtotal: subtotal})
+    .then((response) => {
+      console.log('🟢');
+      closeModal();
+      setCart([]);
+    })
+  }
+
   // console.log("modal: ", modalMode)
   // console.log('🥾',newProduct) // 
+  console.log('🧺',cart) // 
 
   return (
     <div className="App">
@@ -143,7 +194,7 @@ const App = () => {
       <NavViewContext.Provider value={{navView ,backEndView, frontEndView }}>
         <Router>
 
-          <Navbar />
+          <Navbar cart={cart} onCartClick={onCartClick}/>
           { modalIsOpen && 
             <Modal isOpen={modalIsOpen} 
               className="modal" 
@@ -152,6 +203,7 @@ const App = () => {
             >
               {modalMode.mode === 101 && <ShowErrorModal closeModal={closeModal} modalMode={modalMode} />}
               {modalMode.mode === 102 && <ShowSuccessAddEditProduct closeModal={closeModal} modalMode={modalMode} />}
+              {modalMode.mode === 103 && <CheckOutModal closeModal={closeModal} modalMode={modalMode} cart={cart} onRemove={onRemoveFromCart} onCheckout={onCheckout} /> }
             </Modal>
           }
 
@@ -159,8 +211,8 @@ const App = () => {
             <Route path="/" element={<Home />}/>
             <Route path="/about" element={<About />} />
             <Route path="/setting/*" element={<Setting />} />
-            <Route path="/products/men/:id" element={<ProductMain />} />
-            <Route path="/products/women/:id" element={<ProductMain />} />
+            <Route path="/products/men/:id" element={<ProductMain addToCart={addToCart} />} />
+            <Route path="/products/women/:id" element={<ProductMain addToCart={addToCart} />} />
             <Route path="/products/:id" element={<Products />} />
 
             <Route path="/products/*" element={<NotExistPage />} />

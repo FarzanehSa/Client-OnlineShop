@@ -11,7 +11,7 @@ const ShowErrorModal = (props) => {
   return (
     <div className='error-modal'>
       <h2> Error: {errMsg} </h2>
-      <br />
+      {/* <br /> */}
       {errCode === 1001 && 
         <div className='edit-suggestion'>
           <h3> Do you whant to Edit item with SKU: {sku} ? </h3>

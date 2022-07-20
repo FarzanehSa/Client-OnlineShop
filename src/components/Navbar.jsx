@@ -5,9 +5,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import '../styles/Navbar.scss';
 
 import NavViewContext from '../contexts/NavViewContext';
+import { useSlotProps } from '@mui/base';
 
-const Navbar = () => {
+const Navbar = (props) => {
 
+  console.log(props);
   const {navView} = useContext(NavViewContext);
   
 
@@ -32,7 +34,12 @@ const Navbar = () => {
         <button><NavLink to="/about"> About </NavLink></button>
         <button><NavLink to="/setting"><FontAwesomeIcon icon="fa-solid fa-gears" /></NavLink></button>
       </nav>
-      <button><FontAwesomeIcon icon="fa-solid fa-cart-shopping" /></button>
+      {/* {navView === "FE" &&  */}
+        <>
+          <button onClick={() => props.onCartClick()} disabled={Object.keys(props.cart).length === 0}><FontAwesomeIcon icon="fa-solid fa-cart-shopping" /></button>
+          <output id="main-cart-qty">{Object.keys(props.cart).length}</output>
+        </>
+      {/* } */}
     </div>
   );
 };

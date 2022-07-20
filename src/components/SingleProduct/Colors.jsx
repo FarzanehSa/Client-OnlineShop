@@ -5,6 +5,8 @@ import './Colors.scss';
 
 const Colors = (props) => {
 
+  // console.log(props);
+
   const colorsArry = props.colorSelection.map(product => {
     const myClass =  product.selected ? "color-selected , p-btn" : "p-btn"
     return (
